@@ -34,7 +34,7 @@ export function TerminalHeader() {
           <p className="fintech-gold">{currentTime}</p>
           
           <a
-            href="/public/cv.pdf"
+            href="/cv.pdf"
             target="_blank"
             className="mt-2 px-3 my-2 py-1 bg-amber-400/20 border border-amber-400 text-amber-400 text-xs font-mono hover:bg-amber-400/30 transition-colors"
           >
