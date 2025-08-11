@@ -51,10 +51,3 @@ jobs:
           push: ${{ github.ref == 'refs/heads/master' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-      attestations: write
-      id-token: write
