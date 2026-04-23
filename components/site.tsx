@@ -277,6 +277,18 @@ export function Site() {
           >
             <span>© {year ?? ""} Kirill Orlov · Berlin, DE</span>
             <span style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              <a
+                href="/impressum"
+                style={{ color: "var(--text-tertiary)", textDecoration: "none" }}
+              >
+                Impressum
+              </a>
+              <a
+                href="/datenschutz"
+                style={{ color: "var(--text-tertiary)", textDecoration: "none" }}
+              >
+                Datenschutz
+              </a>
               <span style={{ whiteSpace: "nowrap" }}>
                 press <kbd style={kbdTiny}>?</kbd> for shortcuts
               </span>
