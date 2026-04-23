@@ -1,46 +1,52 @@
-import type React from "react"
-import { JetBrains_Mono, Orbitron } from "next/font/google"
-import "./globals.css"
+import type { Metadata, Viewport } from "next";
+import { Geist, Inter, JetBrains_Mono } from "next/font/google";
+import "./globals.css";
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin", "cyrillic"],
-  display: "swap",
-  variable: "--font-jetbrains-mono",
-})
-
-const orbitron = Orbitron({
+const geist = Geist({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-geist",
   display: "swap",
-  variable: "--font-orbitron",
-})
+});
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Kirill Orlov — Vice President @ Solactive",
+  description:
+    "Vice President at Solactive. Fourteen years of Java, Kubernetes, and CI/CD. Platform & trading infrastructure. Berlin, DE.",
+  icons: {
+    icon: "/logo.png",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#000000",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${jetbrainsMono.variable} ${orbitron.variable} antialiased`}>
-      <head>
-        <title>Kirill Orlov.pro</title>
-      </head>
-      <body className="bg-black text-green-400 font-mono overflow-x-hidden">
-        <div className="fixed inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-90 pointer-events-none" />
-        <div className="fixed inset-0 opacity-10 pointer-events-none">
-          <div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-20 transform rotate-45"
-            style={{
-              backgroundImage: "radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.1) 1px, transparent 1px)",
-              backgroundSize: "30px 30px",
-            }}
-          />
-        </div>
-        {children}
-      </body>
+    <html
+      lang="en"
+      data-theme="dark"
+      className={`${geist.variable} ${inter.variable} ${jetbrains.variable}`}
+      suppressHydrationWarning
+    >
+      <body>{children}</body>
     </html>
-  )
+  );
 }
-
-export const metadata = {
-      generator: 'v0.dev'
-    };
