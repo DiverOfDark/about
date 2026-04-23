@@ -3,7 +3,7 @@ export const BIO = {
   handle: "diverofdark",
   role: "Vice President @ Solactive",
   location: "Berlin, DE",
-  email: "[email protected]",
+  email: "me@kirillorlov.pro",
   linkedin: "linkedin.com/in/diverofdark",
   github: "github.com/diverofdark",
 } as const;
