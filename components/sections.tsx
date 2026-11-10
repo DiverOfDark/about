@@ -531,7 +531,12 @@ export function Homelab() {
   );
 }
 
-export function WritingList({ posts }: { posts: PostTeaser[] }) {
+type WritingListProps = {
+  posts: PostTeaser[];
+  allPostsLink?: boolean;
+};
+
+export function WritingList({ posts, allPostsLink = false }: WritingListProps) {
   const mono: CSSProperties = {
     fontFamily: "var(--font-mono)",
     color: "var(--text-tertiary)",
@@ -576,24 +581,26 @@ export function WritingList({ posts }: { posts: PostTeaser[] }) {
           </span>
         </a>
       ))}
-      <a
-        href="/blog"
-        style={{
-          ...mono,
-          alignSelf: "flex-start",
-          marginTop: 14,
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          fontSize: 10.5,
-          letterSpacing: ".1em",
-          textTransform: "uppercase",
-          textDecoration: "none",
-          color: "var(--accent)",
-        }}
-      >
-        All posts <Icon name="arrow" size={11} />
-      </a>
+      {allPostsLink && (
+        <a
+          href="/blog"
+          style={{
+            ...mono,
+            alignSelf: "flex-start",
+            marginTop: 14,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 10.5,
+            letterSpacing: ".1em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            color: "var(--accent)",
+          }}
+        >
+          All posts <Icon name="arrow" size={11} />
+        </a>
+      )}
     </div>
   );
 }

@@ -389,7 +389,7 @@ a:hover {
   border-bottom-color: var(--accent);
 }
 
-.topnav a.topnav-blog {
+.topnav a.topnav-accent {
   color: var(--accent);
 }
 
@@ -403,9 +403,92 @@ section[id] {
   }
 }
 
-/* Author note under a blog post */
-.author-card {
+/* Blog pages */
+.page-head {
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.page-head h1 {
+  max-width: 720px;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.page-head p {
+  max-width: 680px;
+  margin: 20px 0 0;
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.list-head {
   display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+
+.list-head .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.post .prose {
+  max-width: 720px;
+}
+
+.post-end {
+  display: flex;
+  justify-content: space-between;
+  max-width: 720px;
+  margin-top: 40px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.post-end a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.follow-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 48px;
+  padding: 28px 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+}
+
+/* Author note under a post: only where the sidebar is collapsed */
+.author-card {
+  display: none;
   gap: 16px;
   align-items: flex-start;
   margin-top: 48px;
@@ -437,4 +520,21 @@ section[id] {
 .author-card-links a {
   color: var(--accent);
   text-decoration: none;
+}
+
+/* On small screens a blog page keeps only the site name from the sidebar, so the post comes first. */
+@media (max-width: 900px) {
+  .rail.rail-compact {
+    padding: 16px 24px;
+  }
+  /* !important: the sidebar blocks set display inline */
+  .rail.rail-compact > :not(:first-child) {
+    display: none !important;
+  }
+  .author-card {
+    display: flex;
+  }
+  .page-head h1 {
+    font-size: 28px;
+  }
 }

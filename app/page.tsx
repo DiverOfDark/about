@@ -2,5 +2,5 @@ import { Site } from "@/components/site";
 import { getTeasers } from "@/lib/blog";
 
 export default function Page() {
-  return <Site posts={getTeasers(3)} />;
+  return <Site posts={getTeasers()} />;
 }

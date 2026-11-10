@@ -12,6 +12,7 @@ export type Post = {
   date: string;
   summary: string;
   html: string;
+  minutes: number;
 };
 
 export type PostTeaser = Pick<Post, "slug" | "title" | "summary"> & { dateLabel: string };
@@ -46,6 +47,7 @@ export function getPosts(): Post[] {
       date: meta.date ?? "",
       summary: meta.summary ?? "",
       html: marked.parse(body, { async: false }),
+      minutes: Math.max(1, Math.round(body.split(/\s+/).length / 220)),
     }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
@@ -65,8 +67,6 @@ export function formatDate(date: string): string {
   });
 }
 
-export function getTeasers(limit: number): PostTeaser[] {
-  return getPosts()
-    .slice(0, limit)
-    .map(({ slug, title, summary, date }) => ({ slug, title, summary, dateLabel: formatDate(date) }));
+export function getTeasers(): PostTeaser[] {
+  return getPosts().map(({ slug, title, summary, date }) => ({ slug, title, summary, dateLabel: formatDate(date) }));
 }

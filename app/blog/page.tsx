@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { LegalPage } from "@/components/legal-page";
-import { formatDate, getPosts } from "@/lib/blog";
+import { Shell } from "@/components/shell";
+import { FollowCard } from "@/components/follow-card";
+import { SiteFooter } from "@/components/site-footer";
+import { WritingList } from "@/components/sections";
+import { getTeasers } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Blog — kirillorlov.pro",
@@ -10,57 +12,33 @@ export const metadata: Metadata = {
 };
 
 export default function BlogIndexPage() {
-  const posts = getPosts();
+  const posts = getTeasers();
   return (
-    <LegalPage
-      title="Blog"
-      lang="en"
-      otherLegalLink={{ href: "/blog/feed.xml", label: "RSS" }}
-    >
-      {posts.length === 0 && (
+    <Shell page="blog" posts={posts}>
+      <header className="page-head">
+        <div className="eyebrow"># Writing</div>
+        <h1>Notes from running Kubernetes on bare metal at home, and what broke.</h1>
+        <p>
+          Incidents, upgrades and side projects from my homelab: what the symptom was, what I
+          guessed wrong, and what fixed it.
+        </p>
+      </header>
+
+      <div className="list-head">
+        <span>{posts.length === 1 ? "1 post" : `${posts.length} posts`}</span>
+        <span className="rule" />
+        <span>newest first</span>
+      </div>
+
+      {posts.length === 0 ? (
         <p style={{ color: "var(--text-secondary)" }}>Nothing published yet.</p>
+      ) : (
+        <WritingList posts={posts} />
       )}
-      {posts.map((post) => (
-        <article key={post.slug} style={{ marginTop: 28 }}>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 10.5,
-              letterSpacing: ".08em",
-              color: "var(--text-tertiary)",
-              textTransform: "uppercase",
-            }}
-          >
-            {formatDate(post.date)}
-          </div>
-          <h2
-            style={{
-              fontSize: 20,
-              fontWeight: 600,
-              letterSpacing: "-0.01em",
-              fontFamily: "var(--font-heading)",
-              margin: "6px 0 0",
-            }}
-          >
-            <Link href={`/blog/${post.slug}`} style={{ textDecoration: "none" }}>
-              {post.title}
-            </Link>
-          </h2>
-          {post.summary && (
-            <p
-              style={{
-                margin: "8px 0 0",
-                fontSize: 14,
-                color: "var(--text-secondary)",
-                fontWeight: 300,
-                lineHeight: 1.6,
-              }}
-            >
-              {post.summary}
-            </p>
-          )}
-        </article>
-      ))}
-    </LegalPage>
+
+      <FollowCard />
+
+      <SiteFooter />
+    </Shell>
   );
 }

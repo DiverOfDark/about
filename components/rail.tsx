@@ -15,6 +15,7 @@ type Props = {
   onCopyEmail: () => void;
   onOpenCommand: () => void;
   onOpenTweaks: () => void;
+  page: "home" | "blog";
   showBlog: boolean;
 };
 
@@ -26,11 +27,18 @@ export function Rail({
   onCopyEmail,
   onOpenCommand,
   onOpenTweaks,
+  page,
   showBlog,
 }: Props) {
+  // The page title is the h1 on blog pages, so the name is only a heading on the home page.
+  const Name = page === "home" ? "h1" : "div";
+  const secondary = { ...btnI, gap: 8, fontSize: 12.5, fontWeight: 500, textDecoration: "none" };
   return (
-    <aside className="rail">
-      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+    <aside className={page === "home" ? "rail" : "rail rail-compact"}>
+      <a
+        href="/"
+        style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}
+      >
         <Image src="/logo.png" alt="" width={16} height={16} />
         <span
           style={{
@@ -42,7 +50,7 @@ export function Rail({
         >
           kirillorlov.pro
         </span>
-      </div>
+      </a>
 
       <div style={{ position: "relative", width: 120, height: 120 }}>
         <Image
@@ -73,7 +81,7 @@ export function Rail({
       </div>
 
       <div>
-        <h1
+        <Name
           style={{
             fontSize: 24,
             fontWeight: 700,
@@ -84,7 +92,7 @@ export function Rail({
           }}
         >
           Kirill Orlov
-        </h1>
+        </Name>
         <div
           style={{
             marginTop: 6,
@@ -146,13 +154,16 @@ export function Rail({
         <a href="/cv.pdf" style={btnP}>
           <Icon name="download" size={13} /> Download CV
         </a>
-        {showBlog && (
-          <a
-            href="/blog"
-            style={{ ...btnI, gap: 8, fontSize: 12.5, fontWeight: 500, textDecoration: "none" }}
-          >
-            Read the blog <Icon name="arrow" size={12} />
+        {page === "blog" ? (
+          <a href="/" style={secondary}>
+            About me <Icon name="arrow" size={12} />
           </a>
+        ) : (
+          showBlog && (
+            <a href="/blog" style={secondary}>
+              Read the blog <Icon name="arrow" size={12} />
+            </a>
+          )
         )}
         <div
           style={{
