@@ -278,6 +278,12 @@ export function Site() {
             <span>© {year ?? ""} Kirill Orlov · Berlin, DE</span>
             <span style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
               <a
+                href="/blog"
+                style={{ color: "var(--text-tertiary)", textDecoration: "none" }}
+              >
+                Blog
+              </a>
+              <a
                 href="/impressum"
                 style={{ color: "var(--text-tertiary)", textDecoration: "none" }}
               >

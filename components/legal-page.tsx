@@ -5,12 +5,21 @@ import { Icon } from "./ui/icon";
 
 type Props = {
   title: string;
+  eyebrow?: string;
   lang?: string;
+  backHref?: string;
   children: ReactNode;
   otherLegalLink: { href: string; label: string };
 };
 
-export function LegalPage({ title, lang = "de", children, otherLegalLink }: Props) {
+export function LegalPage({
+  title,
+  eyebrow,
+  lang = "de",
+  backHref = "/",
+  children,
+  otherLegalLink,
+}: Props) {
   return (
     <div
       style={{
@@ -56,7 +65,7 @@ export function LegalPage({ title, lang = "de", children, otherLegalLink }: Prop
         </Link>
         <span style={{ flex: 1 }} />
         <Link
-          href="/"
+          href={backHref}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -98,7 +107,7 @@ export function LegalPage({ title, lang = "de", children, otherLegalLink }: Prop
             textTransform: "uppercase",
           }}
         >
-          # {title}
+          # {eyebrow ?? title}
         </div>
         <h1
           style={{
