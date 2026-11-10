@@ -15,6 +15,7 @@ type Props = {
   onCopyEmail: () => void;
   onOpenCommand: () => void;
   onOpenTweaks: () => void;
+  showBlog: boolean;
 };
 
 export function Rail({
@@ -25,6 +26,7 @@ export function Rail({
   onCopyEmail,
   onOpenCommand,
   onOpenTweaks,
+  showBlog,
 }: Props) {
   return (
     <aside className="rail">
@@ -144,6 +146,14 @@ export function Rail({
         <a href="/cv.pdf" style={btnP}>
           <Icon name="download" size={13} /> Download CV
         </a>
+        {showBlog && (
+          <a
+            href="/blog"
+            style={{ ...btnI, gap: 8, fontSize: 12.5, fontWeight: 500, textDecoration: "none" }}
+          >
+            Read the blog <Icon name="arrow" size={12} />
+          </a>
+        )}
         <div
           style={{
             display: "grid",

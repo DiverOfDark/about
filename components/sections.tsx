@@ -5,6 +5,7 @@ import { Badge } from "./ui/badge";
 import { Sparkline } from "./ui/sparkline";
 import { btnP, btnI } from "./shared";
 import { BIO, EXPERIENCE, EDUCATION, INTERESTS, HOMELAB } from "@/lib/data";
+import type { PostTeaser } from "@/lib/blog";
 
 type SectionProps = {
   id: string;
@@ -526,6 +527,73 @@ export function Homelab() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+export function WritingList({ posts }: { posts: PostTeaser[] }) {
+  const mono: CSSProperties = {
+    fontFamily: "var(--font-mono)",
+    color: "var(--text-tertiary)",
+  };
+  return (
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {posts.map((post) => (
+        <a
+          key={post.slug}
+          href={`/blog/${post.slug}`}
+          className="edu-row"
+          style={{
+            padding: "14px 0",
+            display: "grid",
+            gridTemplateColumns: "120px 1fr 120px",
+            gap: 20,
+            borderBottom: "1px solid var(--border)",
+            alignItems: "baseline",
+            textDecoration: "none",
+          }}
+        >
+          <span style={{ ...mono, fontSize: 11, letterSpacing: ".04em" }}>
+            {post.dateLabel}
+          </span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 500 }}>{post.title}</div>
+            {post.summary && (
+              <div
+                style={{
+                  fontSize: 12.5,
+                  color: "var(--text-secondary)",
+                  fontWeight: 300,
+                  marginTop: 3,
+                }}
+              >
+                {post.summary}
+              </div>
+            )}
+          </div>
+          <span style={{ ...mono, fontSize: 10, letterSpacing: ".1em", textAlign: "right" }}>
+            READ →
+          </span>
+        </a>
+      ))}
+      <a
+        href="/blog"
+        style={{
+          ...mono,
+          alignSelf: "flex-start",
+          marginTop: 14,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 6,
+          fontSize: 10.5,
+          letterSpacing: ".1em",
+          textTransform: "uppercase",
+          textDecoration: "none",
+          color: "var(--accent)",
+        }}
+      >
+        All posts <Icon name="arrow" size={11} />
+      </a>
     </div>
   );
 }

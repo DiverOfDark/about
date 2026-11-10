@@ -13,11 +13,14 @@ import {
   ExperienceList,
   Homelab,
   EducationList,
+  WritingList,
   InterestsGrid,
   ContactCTA,
 } from "./sections";
 import { kbdTiny } from "./shared";
+import { Icon } from "./ui/icon";
 import { useClock } from "@/hooks/use-clock";
+import type { PostTeaser } from "@/lib/blog";
 import {
   ACCENTS,
   AVAIL_COPY,
@@ -62,8 +65,9 @@ function useTweaks(): [Tweaks, <K extends keyof Tweaks>(k: K, v: Tweaks[K]) => v
   return [t, update];
 }
 
-export function Site() {
+export function Site({ posts }: { posts: PostTeaser[] }) {
   const [tweaks, setTweak] = useTweaks();
+  const hasPosts = posts.length > 0;
   const [cmdOpen, setCmdOpen] = useState(false);
   const [tweaksPanelOpen, setTweaksPanelOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -132,8 +136,12 @@ export function Site() {
             c: "contact",
             s: "education",
             i: "interests",
+            w: "writing",
           };
-          if (map[k]) {
+          if (k === "b" && hasPosts) {
+            e2.preventDefault();
+            window.location.href = "/blog";
+          } else if (map[k]) {
             e2.preventDefault();
             jumpSafe(map[k]);
           }
@@ -145,7 +153,44 @@ export function Site() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [tweaks.theme, setTweak, jumpSafe]);
+  }, [tweaks.theme, setTweak, jumpSafe, hasPosts]);
+
+  // Numbered sections, in page order. The nav bar and the section numbers both come from this list.
+  const sections = useMemo(
+    () => [
+      ...(hasPosts ? [{ id: "writing", label: "Writing" }] : []),
+      { id: "pipeline", label: "Career" },
+      { id: "experience", label: "Experience" },
+      ...(tweaks.showHomelab ? [{ id: "homelab", label: "Homelab" }] : []),
+      { id: "education", label: "Education" },
+      { id: "interests", label: "Off-hours" },
+    ],
+    [hasPosts, tweaks.showHomelab],
+  );
+  const num = (id: string) =>
+    String(sections.findIndex((section) => section.id === id) + 1).padStart(2, "0");
+  const navItems = useMemo(
+    () => [{ id: "intro", label: "Intro" }, ...sections, { id: "contact", label: "Contact" }],
+    [sections],
+  );
+
+  // Highlight the nav entry for the section currently under the nav bar.
+  const [activeId, setActiveId] = useState("intro");
+  useEffect(() => {
+    const onScroll = () => {
+      let current = navItems[0].id;
+      for (const { id } of navItems) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= 120) current = id;
+      }
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      setActiveId(atBottom ? navItems[navItems.length - 1].id : current);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [navItems]);
 
   const d = DENSITY[tweaks.density];
   const avail = AVAIL_COPY[tweaks.availability];
@@ -153,6 +198,12 @@ export function Site() {
   const cmdItems: CommandItem[] = useMemo(
     () => [
       { group: "Navigate", label: "Jump to intro", icon: "arrow", hint: "g h", run: () => jumpSafe("intro") },
+      ...(hasPosts
+        ? ([
+            { group: "Navigate", label: "Jump to writing", icon: "arrow", hint: "g w", run: () => jumpSafe("writing") },
+            { group: "Navigate", label: "Open blog", icon: "external", hint: "g b", run: () => { window.location.href = "/blog"; } },
+          ] satisfies CommandItem[])
+        : []),
       { group: "Navigate", label: "Jump to experience", icon: "arrow", hint: "g e", run: () => jumpSafe("experience") },
       { group: "Navigate", label: "Jump to homelab", icon: "arrow", hint: "g l", run: () => jumpSafe("homelab") },
       { group: "Navigate", label: "Jump to education", icon: "arrow", hint: "g s", run: () => jumpSafe("education") },
@@ -171,7 +222,7 @@ export function Site() {
       },
       { group: "View", label: "Open tweaks panel", icon: "settings", run: () => setTweaksPanelOpen(true) },
     ],
-    [tweaks.theme, copyEmail, jumpSafe, setTweak],
+    [tweaks.theme, copyEmail, jumpSafe, setTweak, hasPosts],
   );
 
   const clockLabel = clock
@@ -198,7 +249,36 @@ export function Site() {
           onCopyEmail={copyEmail}
           onOpenCommand={() => setCmdOpen(true)}
           onOpenTweaks={() => setTweaksPanelOpen(true)}
+          showBlog={hasPosts}
         />
+
+        <div className="feed-col">
+        <nav
+          className="topnav"
+          aria-label="Sections"
+          style={{ paddingInline: d.pad.split(" ")[1] }}
+        >
+          <div className="topnav-links">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={activeId === item.id ? "active" : undefined}
+                onClick={(e) => {
+                  e.preventDefault();
+                  jumpSafe(item.id);
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+          {hasPosts && (
+            <a href="/blog" className="topnav-blog">
+              Blog <Icon name="arrow" size={11} />
+            </a>
+          )}
+        </nav>
 
         <main
           id="feed"
@@ -208,9 +288,21 @@ export function Site() {
           <Intro availabilityNote={avail.note} spacing={d.gap} />
           <StatStrip />
 
+          {hasPosts && (
+            <Section
+              id="writing"
+              num={num("writing")}
+              label="Writing"
+              meta="latest posts"
+              spacing={d.gap}
+            >
+              <WritingList posts={posts} />
+            </Section>
+          )}
+
           <Section
             id="pipeline"
-            num="01"
+            num={num("pipeline")}
             label="Career pipeline"
             meta="3 stops · on schedule"
             spacing={d.gap}
@@ -220,7 +312,7 @@ export function Site() {
 
           <Section
             id="experience"
-            num="02"
+            num={num("experience")}
             label="Experience"
             meta={`${EXPERIENCE.length} companies`}
             spacing={d.gap}
@@ -231,7 +323,7 @@ export function Site() {
           {tweaks.showHomelab && (
             <Section
               id="homelab"
-              num="03"
+              num={num("homelab")}
               label="Homelab"
               meta="6 nodes · home-ops"
               spacing={d.gap}
@@ -242,7 +334,7 @@ export function Site() {
 
           <Section
             id="education"
-            num={tweaks.showHomelab ? "04" : "03"}
+            num={num("education")}
             label="Education & training"
             spacing={d.gap}
           >
@@ -251,7 +343,7 @@ export function Site() {
 
           <Section
             id="interests"
-            num={tweaks.showHomelab ? "05" : "04"}
+            num={num("interests")}
             label="Off-hours"
             meta="what i do when nothing is paging"
             spacing={d.gap}
@@ -277,12 +369,14 @@ export function Site() {
           >
             <span>© {year ?? ""} Kirill Orlov · Berlin, DE</span>
             <span style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-              <a
-                href="/blog"
-                style={{ color: "var(--text-tertiary)", textDecoration: "none" }}
-              >
-                Blog
-              </a>
+              {hasPosts && (
+                <a
+                  href="/blog"
+                  style={{ color: "var(--text-tertiary)", textDecoration: "none" }}
+                >
+                  Blog
+                </a>
+              )}
               <a
                 href="/impressum"
                 style={{ color: "var(--text-tertiary)", textDecoration: "none" }}
@@ -306,6 +400,7 @@ export function Site() {
             </span>
           </footer>
         </main>
+        </div>
       </div>
 
       <CommandPalette

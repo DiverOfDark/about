@@ -335,3 +335,106 @@ a:hover {
   font-size: 12.5px;
   line-height: 1.6;
 }
+
+/* Home page section nav */
+.feed-col {
+  min-width: 0;
+}
+
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  height: 44px;
+  max-width: 960px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklch, var(--bg-base) 88%, transparent);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.topnav-links {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.topnav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topnav a:hover,
+.topnav a.active {
+  color: var(--text-primary);
+}
+
+.topnav a.active {
+  border-bottom-color: var(--accent);
+}
+
+.topnav a.topnav-blog {
+  color: var(--accent);
+}
+
+section[id] {
+  scroll-margin-top: 64px;
+}
+
+@media (max-width: 900px) {
+  .topnav {
+    padding-inline: 24px !important;
+  }
+}
+
+/* Author note under a blog post */
+.author-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-top: 48px;
+  padding: 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.author-card img {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-strong);
+}
+
+.author-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.author-card-links a {
+  color: var(--accent);
+  text-decoration: none;
+}

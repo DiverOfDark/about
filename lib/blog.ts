@@ -14,6 +14,8 @@ export type Post = {
   html: string;
 };
 
+export type PostTeaser = Pick<Post, "slug" | "title" | "summary"> & { dateLabel: string };
+
 function parseFrontMatter(raw: string): { meta: Record<string, string>; body: string } {
   const match = /^---\n([\s\S]*?)\n---\n?/.exec(raw);
   if (!match) return { meta: {}, body: raw };
@@ -61,4 +63,10 @@ export function formatDate(date: string): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+export function getTeasers(limit: number): PostTeaser[] {
+  return getPosts()
+    .slice(0, limit)
+    .map(({ slug, title, summary, date }) => ({ slug, title, summary, dateLabel: formatDate(date) }));
 }
