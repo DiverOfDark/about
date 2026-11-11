@@ -268,3 +268,291 @@ a:hover {
     border-bottom: none;
   }
 }
+
+/* Blog post body (rendered Markdown) */
+.prose {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.prose h2 {
+  margin: 36px 0 12px;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose pre {
+  margin: 0 0 16px;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 22px;
+}
+
+.prose li {
+  margin-bottom: 6px;
+}
+
+.prose a {
+  color: var(--accent);
+}
+
+.prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.prose pre {
+  padding: 14px 16px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+}
+
+.prose img,
+.prose video {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 560px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+}
+
+.prose blockquote {
+  margin: 0 0 16px;
+  padding: 2px 0 2px 16px;
+  border-left: 2px solid var(--accent);
+  color: var(--text-primary);
+}
+
+.prose pre code {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+/* Home page section nav */
+.feed-col {
+  min-width: 0;
+}
+
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  height: 44px;
+  max-width: 960px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklch, var(--bg-base) 88%, transparent);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.topnav-links {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.topnav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topnav a:hover,
+.topnav a.active {
+  color: var(--text-primary);
+}
+
+.topnav a.active {
+  border-bottom-color: var(--accent);
+}
+
+.topnav a.topnav-accent {
+  color: var(--accent);
+}
+
+section[id] {
+  scroll-margin-top: 64px;
+}
+
+@media (max-width: 900px) {
+  .topnav {
+    padding-inline: 24px !important;
+  }
+}
+
+/* Blog pages */
+.page-head {
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.page-head h1 {
+  max-width: 720px;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.page-head p {
+  max-width: 680px;
+  margin: 20px 0 0;
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.list-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+
+.list-head .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.post .prose {
+  max-width: 720px;
+}
+
+.post-end {
+  display: flex;
+  justify-content: space-between;
+  max-width: 720px;
+  margin-top: 40px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.post-end a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.follow-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 48px;
+  padding: 28px 32px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+}
+
+/* Author note under a post: only where the sidebar is collapsed */
+.author-card {
+  display: none;
+  gap: 16px;
+  align-items: flex-start;
+  margin-top: 48px;
+  padding: 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.author-card img {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-strong);
+}
+
+.author-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.author-card-links a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* On small screens a blog page keeps only the site name from the sidebar, so the post comes first. */
+@media (max-width: 900px) {
+  .rail.rail-compact {
+    padding: 16px 24px;
+  }
+  /* !important: the sidebar blocks set display inline */
+  .rail.rail-compact > :not(:first-child) {
+    display: none !important;
+  }
+  .author-card {
+    display: flex;
+  }
+  .page-head h1 {
+    font-size: 28px;
+  }
+}

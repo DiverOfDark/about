@@ -3,7 +3,7 @@ import { LegalPage, LegalSection } from "@/components/legal-page";
 
 export const metadata: Metadata = {
   title: "Impressum — kirillorlov.pro",
-  description: "Angaben gemäß § 5 TMG für kirillorlov.pro.",
+  description: "Angaben gemäß § 5 DDG für kirillorlov.pro.",
 };
 
 export default function ImpressumPage() {
@@ -13,7 +13,7 @@ export default function ImpressumPage() {
       lang="de"
       otherLegalLink={{ href: "/datenschutz", label: "Datenschutz" }}
     >
-      <LegalSection heading="Angaben gemäß § 5 TMG">
+      <LegalSection heading="Angaben gemäß § 5 DDG">
         <p style={{ margin: 0 }}>
           Kirill Orlov
           <br />
@@ -49,10 +49,11 @@ export default function ImpressumPage() {
         <p style={{ margin: 0 }}>
           Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die
           Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann jedoch keine
-          Gewähr übernommen werden. Als Diensteanbieter bin ich gemäß § 7 Abs. 1 TMG
-          für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
-          verantwortlich. Nach §§ 8 bis 10 TMG bin ich als Diensteanbieter jedoch
-          nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
+          Gewähr übernommen werden. Als Diensteanbieter bin ich für eigene Inhalte
+          auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach
+          Art. 4 bis 8 der Verordnung (EU) 2022/2065 (Digital Services Act) in
+          Verbindung mit § 7 DDG bin ich als Diensteanbieter jedoch nicht
+          verpflichtet, übermittelte oder gespeicherte fremde Informationen zu
           überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige
           Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der
           Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon

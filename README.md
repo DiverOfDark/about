@@ -16,6 +16,23 @@ npm run build
 npm start
 ```
 
+## Blog
+
+Posts are Markdown files in `content/blog/`, named `YYYY-MM-DD-slug.md`. The file name is the URL
+(`/blog/YYYY-MM-DD-slug`). Front matter:
+
+```
+---
+title: "Post title"
+date: 2026-11-13
+summary: "One sentence for the list page and the RSS feed."
+status: draft
+---
+```
+
+A post with `status: draft` shows up in `npm run dev` only. Remove that line to publish it.
+The feed is at `/blog/feed.xml`.
+
 ## Docker
 
 Built and pushed to `ghcr.io/<owner>/about/website:latest` by
