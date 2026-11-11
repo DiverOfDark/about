@@ -17,9 +17,11 @@ export default function ImpressumPage() {
         <p style={{ margin: 0 }}>
           Kirill Orlov
           <br />
-          [Anschrift entfernt]
+          c/o Autorenglück #84509
           <br />
-          [Anschrift entfernt]
+          Albert-Einstein-Straße 47
+          <br />
+          02977 Hoyerswerda
           <br />
           Deutschland
         </p>
@@ -41,7 +43,8 @@ export default function ImpressumPage() {
 
       <LegalSection heading="Verantwortlich für den Inhalt">
         <p style={{ margin: 0 }}>
-          Kirill Orlov, [Anschrift entfernt], [Anschrift entfernt] (Anschrift wie oben).
+          Kirill Orlov, c/o Autorenglück #84509, Albert-Einstein-Straße 47, 02977
+          Hoyerswerda (Anschrift wie oben).
         </p>
       </LegalSection>
 

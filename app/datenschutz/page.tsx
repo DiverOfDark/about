@@ -26,9 +26,11 @@ export default function DatenschutzPage() {
         <p style={{ marginTop: 12, marginBottom: 0 }}>
           Kirill Orlov
           <br />
-          [Anschrift entfernt]
+          c/o Autorenglück #84509
           <br />
-          [Anschrift entfernt]
+          Albert-Einstein-Straße 47
+          <br />
+          02977 Hoyerswerda
           <br />
           Deutschland
           <br />
