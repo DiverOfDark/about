@@ -18,7 +18,8 @@ npm start
 
 ## Blog
 
-Posts are Markdown files in `content/blog/`, named `YYYY-MM-DD-slug.md`, with front matter:
+Posts are Markdown files in `content/blog/`, named `YYYY-MM-DD-slug.md`. The file name is the URL
+(`/blog/YYYY-MM-DD-slug`). Front matter:
 
 ```
 ---

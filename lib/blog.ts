@@ -42,7 +42,8 @@ export function getPosts(): Post[] {
     })
     .filter(({ meta }) => showDrafts || meta.status !== "draft")
     .map(({ file, meta, body }) => ({
-      slug: file.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, ""),
+      // The file name, date included, is the URL: /blog/2026-11-13-some-title
+      slug: file.replace(/\.md$/, ""),
       title: meta.title ?? file,
       date: meta.date ?? "",
       summary: meta.summary ?? "",
