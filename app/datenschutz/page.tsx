@@ -26,9 +26,11 @@ export default function DatenschutzPage() {
         <p style={{ marginTop: 12, marginBottom: 0 }}>
           Kirill Orlov
           <br />
-          Meinekestraße 21
+          c/o Autorenglück #84509
           <br />
-          10719 Berlin
+          Albert-Einstein-Straße 47
+          <br />
+          02977 Hoyerswerda
           <br />
           Deutschland
           <br />

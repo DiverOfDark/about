@@ -17,9 +17,11 @@ export default function ImpressumPage() {
         <p style={{ margin: 0 }}>
           Kirill Orlov
           <br />
-          Meinekestraße 21
+          c/o Autorenglück #84509
           <br />
-          10719 Berlin
+          Albert-Einstein-Straße 47
+          <br />
+          02977 Hoyerswerda
           <br />
           Deutschland
         </p>
@@ -41,7 +43,8 @@ export default function ImpressumPage() {
 
       <LegalSection heading="Verantwortlich für den Inhalt">
         <p style={{ margin: 0 }}>
-          Kirill Orlov, Meinekestraße 21, 10719 Berlin (Anschrift wie oben).
+          Kirill Orlov, c/o Autorenglück #84509, Albert-Einstein-Straße 47, 02977
+          Hoyerswerda (Anschrift wie oben).
         </p>
       </LegalSection>
 
