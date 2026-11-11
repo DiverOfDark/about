@@ -328,6 +328,24 @@ a:hover {
   background: var(--bg-surface);
 }
 
+.prose img,
+.prose video {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 560px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+}
+
+.prose blockquote {
+  margin: 0 0 16px;
+  padding: 2px 0 2px 16px;
+  border-left: 2px solid var(--accent);
+  color: var(--text-primary);
+}
+
 .prose pre code {
   padding: 0;
   border: 0;
