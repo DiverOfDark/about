@@ -14,7 +14,8 @@ or it is not sent; the preview card under the message is always the post.
 
 ## linkedin
 English text for LinkedIn, posted exactly as written. LinkedIn has no clickable words:
-write plain URLs. The post itself is attached as the card under the text.
+write plain URLs. It must link the post itself too, e.g. "More details on my website:
+<url>", or it is not sent; the post also shows as the card under the text.
 ```
 
 Each text is read in the channel, away from the post: refer to the site as "my site" or
