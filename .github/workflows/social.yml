@@ -1,0 +1,48 @@
+name: Announce posts
+
+# Posts the reviewed texts in content/social/<slug>.md to Telegram and LinkedIn
+# once the post is live on kirillorlov.pro. See scripts/publish-social.py.
+on:
+  push:
+    branches: [master]
+    paths: ["content/blog/**", "content/social/**"]
+  schedule:
+    - cron: "17 */6 * * *" # retries anything a previous run could not post
+  workflow_dispatch:
+
+concurrency:
+  group: announce-posts
+  cancel-in-progress: false
+
+jobs:
+  announce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    permissions:
+      contents: write
+    steps:
+      # Latest master, not the triggering commit: a run queued behind another one must
+      # see the posted.json that run committed, or it would post the same texts again.
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Post to Telegram and LinkedIn
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ vars.TELEGRAM_CHAT_ID }}
+          LINKEDIN_TOKEN: ${{ secrets.LINKEDIN_TOKEN }}
+          LINKEDIN_PERSON_URN: ${{ vars.LINKEDIN_PERSON_URN }}
+          LINKEDIN_TOKEN_EXPIRES: ${{ vars.LINKEDIN_TOKEN_EXPIRES }}
+        run: python3 scripts/publish-social.py
+
+      - name: Record what was posted
+        if: always()
+        run: |
+          git add content/social/*.posted.json 2>/dev/null || true
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(social): record announced posts"
+          git pull --rebase origin master
+          git push origin HEAD:master
