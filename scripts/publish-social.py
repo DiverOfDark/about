@@ -15,7 +15,7 @@ Environment (a channel without its credentials is skipped with a warning):
   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
   LINKEDIN_TOKEN, LINKEDIN_PERSON_URN, LINKEDIN_TOKEN_EXPIRES (YYYY-MM-DD, for the warning)
   LINKEDIN_VERSION   LinkedIn API version, YYYYMM (default below)
-  DEPLOY_TIMEOUT     seconds to wait for the post URL (default 2400)
+  DEPLOY_TIMEOUT     seconds to wait for post URLs, shared by all posts in a run (default 2400)
 
 Usage: publish-social.py [--dry-run] [--no-wait]
 """
@@ -92,8 +92,8 @@ def request(method: str, url: str, body=None, headers=None, form=False):
         raise RuntimeError(f"{method} {url.split('?')[0]} -> {e.code}: {detail}") from None
 
 
-def wait_for_deploy(url: str, timeout: int) -> bool:
-    deadline = time.time() + timeout
+def wait_for_deploy(url: str, deadline: float) -> bool:
+    """Poll until the URL answers 200 or the run-wide deadline passes (always checks once)."""
     while True:
         try:
             with urllib.request.urlopen(urllib.request.Request(url, method="HEAD"), timeout=15) as r:
@@ -179,6 +179,9 @@ def main() -> int:
     ap.add_argument("--no-wait", action="store_true", help="do not wait for the post URL")
     a = ap.parse_args()
     timeout = int(os.environ.get("DEPLOY_TIMEOUT") or 2400)
+    # One wait budget for the whole run, so a post that never goes live cannot use up
+    # the job's time before later posts are checked; after it, each URL is tried once.
+    deadline = time.time() + timeout
     linkedin_expiry_warning()
 
     failed = False
@@ -206,8 +209,8 @@ def main() -> int:
                 shown = telegram_text(text, url) if channel == "telegram" else linkedin_escape(text)
                 log(f"--- {channel} ---\n{shown}\n")
             continue
-        if not a.no_wait and not wait_for_deploy(url, timeout):
-            warn(f"{slug}: {url} did not answer 200 in {timeout}s; will retry on the next run")
+        if not a.no_wait and not wait_for_deploy(url, deadline):
+            warn(f"{slug}: {url} is not live yet; will retry on the next run")
             failed = True
             continue
 

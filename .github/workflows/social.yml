@@ -21,7 +21,11 @@ jobs:
     permissions:
       contents: write
     steps:
+      # Latest master, not the triggering commit: a run queued behind another one must
+      # see the posted.json that run committed, or it would post the same texts again.
       - uses: actions/checkout@v4
+        with:
+          ref: master
 
       - name: Post to Telegram and LinkedIn
         env:
