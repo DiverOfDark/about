@@ -3,7 +3,8 @@
 
 A post is announced when all of these hold:
   - content/blog/<slug>.md exists and its status is not "draft";
-  - content/social/<slug>.md exists, with a "## telegram" and/or "## linkedin" section;
+  - content/social/<slug>.md exists, with a "## telegram" and/or "## linkedin" section
+    (both texts link the post themselves: telegram as [words](url), linkedin as a plain URL);
   - content/social/<slug>.posted.json has no entry for that channel yet;
   - https://kirillorlov.pro/blog/<slug> answers 200 (the deploy is done).
 
@@ -109,12 +110,18 @@ def wait_for_deploy(url: str, deadline: float) -> bool:
 
 # --- Telegram -------------------------------------------------------------
 
+MD_LINK = re.compile(r"\[([^\]\n]+)\]\((https?://[^)\s]+)\)")
+
+
 def telegram_text(text: str, url: str) -> str:
-    """Plain text from the social file; HTML-escaped, the link added at the end."""
-    body = html.escape(text, quote=False)
+    """The text exactly as written, HTML-escaped; [words](https://...) becomes a link.
+
+    Nothing is added: the author writes the link to the post into the text. A text
+    without it is refused, so a forgotten link cannot go out.
+    """
     if url not in text:
-        body += f'\n\n<a href="{html.escape(url)}">{html.escape(url)}</a>'
-    return body
+        raise ValueError(f"the telegram text has no link to {url}; add one, e.g. [Новый пост]({url})")
+    return MD_LINK.sub(lambda m: f'<a href="{m.group(2)}">{m.group(1)}</a>', html.escape(text, quote=False))
 
 
 def post_telegram(text: str, url: str) -> str:
@@ -132,8 +139,16 @@ def post_telegram(text: str, url: str) -> str:
 
 # --- LinkedIn -------------------------------------------------------------
 
-def linkedin_escape(text: str) -> str:
-    """Posts API "little text": these characters must be escaped or the text is cut."""
+def linkedin_text(text: str, url: str) -> str:
+    """Posts API "little text": these characters must be escaped or the text is cut.
+
+    LinkedIn shows URLs as they are, so a [words](url) link would go out literally.
+    Nothing is added: the author writes the link to the post into the text, or it is refused.
+    """
+    if MD_LINK.search(text):
+        raise ValueError("the linkedin text has a [words](url) link; LinkedIn shows those literally, write the plain URL")
+    if url not in text:
+        raise ValueError(f"the linkedin text has no link to {url}; add one, e.g. \"More details on my website: {url}\"")
     return re.sub(r"([\\|{}@\[\]()<>#*_~])", r"\\\1", text)
 
 
@@ -141,7 +156,7 @@ def post_linkedin(text: str, url: str, title: str, summary: str) -> str:
     token, author = os.environ["LINKEDIN_TOKEN"], os.environ["LINKEDIN_PERSON_URN"]
     status, headers, _ = request("POST", "https://api.linkedin.com/rest/posts", {
         "author": author,
-        "commentary": linkedin_escape(text),
+        "commentary": linkedin_text(text, url),
         "visibility": "PUBLIC",
         "distribution": {"feedDistribution": "MAIN_FEED", "targetEntities": [], "thirdPartyDistributionChannels": []},
         "content": {"article": {"source": url, "title": title, "description": summary}},
@@ -206,7 +221,12 @@ def main() -> int:
         log(f"{slug}: to post on {', '.join(todo)}")
         if a.dry_run:
             for channel, text in todo.items():
-                shown = telegram_text(text, url) if channel == "telegram" else linkedin_escape(text)
+                try:
+                    shown = telegram_text(text, url) if channel == "telegram" else linkedin_text(text, url)
+                except ValueError as e:
+                    warn(f"{slug}: {e}")
+                    failed = True
+                    continue
                 log(f"--- {channel} ---\n{shown}\n")
             continue
         if not a.no_wait and not wait_for_deploy(url, deadline):

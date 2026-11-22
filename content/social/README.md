@@ -8,12 +8,18 @@ kirillorlov.pro, `.github/workflows/social.yml` posts each section exactly as wr
 Notes before the first section are ignored.
 
 ## telegram
-Russian text for the Telegram channel. Plain text; the post link is added at the end
-and shows as a preview card.
+Russian text for the Telegram channel, posted exactly as written. Links are written
+inline as [words](https://...). It must link the post itself (https://kirillorlov.pro/blog/<slug>),
+or it is not sent; the preview card under the message is always the post.
 
 ## linkedin
-English text for LinkedIn. Plain text; the post is attached as an article card.
+English text for LinkedIn, posted exactly as written. LinkedIn has no clickable words:
+write plain URLs. It must link the post itself too, e.g. "More details on my website:
+<url>", or it is not sent; the post also shows as the card under the text.
 ```
+
+Each text is read in the channel, away from the post: refer to the site as "my site" or
+"my personal website", never "this blog" or "this post".
 
 Leave a section out to skip that channel. After posting, the workflow commits
 `<slug>.posted.json` with the links; delete an entry there to post again.
