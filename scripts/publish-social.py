@@ -3,7 +3,8 @@
 
 A post is announced when all of these hold:
   - content/blog/<slug>.md exists and its status is not "draft";
-  - content/social/<slug>.md exists, with a "## telegram" and/or "## linkedin" section;
+  - content/social/<slug>.md exists, with a "## telegram" and/or "## linkedin" section
+    (the telegram text links the post itself, inline as [words](url));
   - content/social/<slug>.posted.json has no entry for that channel yet;
   - https://kirillorlov.pro/blog/<slug> answers 200 (the deploy is done).
 
@@ -109,12 +110,18 @@ def wait_for_deploy(url: str, deadline: float) -> bool:
 
 # --- Telegram -------------------------------------------------------------
 
+MD_LINK = re.compile(r"\[([^\]\n]+)\]\((https?://[^)\s]+)\)")
+
+
 def telegram_text(text: str, url: str) -> str:
-    """Plain text from the social file; HTML-escaped, the link added at the end."""
-    body = html.escape(text, quote=False)
+    """The text exactly as written, HTML-escaped; [words](https://...) becomes a link.
+
+    Nothing is added: the author writes the link to the post into the text. A text
+    without it is refused, so a forgotten link cannot go out.
+    """
     if url not in text:
-        body += f'\n\n<a href="{html.escape(url)}">{html.escape(url)}</a>'
-    return body
+        raise ValueError(f"the telegram text has no link to {url}; add one, e.g. [Новый пост]({url})")
+    return MD_LINK.sub(lambda m: f'<a href="{m.group(2)}">{m.group(1)}</a>', html.escape(text, quote=False))
 
 
 def post_telegram(text: str, url: str) -> str:
@@ -206,7 +213,12 @@ def main() -> int:
         log(f"{slug}: to post on {', '.join(todo)}")
         if a.dry_run:
             for channel, text in todo.items():
-                shown = telegram_text(text, url) if channel == "telegram" else linkedin_escape(text)
+                try:
+                    shown = telegram_text(text, url) if channel == "telegram" else linkedin_escape(text)
+                except ValueError as e:
+                    warn(f"{slug}: {e}")
+                    failed = True
+                    continue
                 log(f"--- {channel} ---\n{shown}\n")
             continue
         if not a.no_wait and not wait_for_deploy(url, deadline):

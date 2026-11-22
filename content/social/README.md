@@ -8,8 +8,9 @@ kirillorlov.pro, `.github/workflows/social.yml` posts each section exactly as wr
 Notes before the first section are ignored.
 
 ## telegram
-Russian text for the Telegram channel. Plain text; the post link is added at the end
-and shows as a preview card.
+Russian text for the Telegram channel, posted exactly as written. Links are written
+inline as [words](https://...). It must link the post itself (https://kirillorlov.pro/blog/<slug>),
+or it is not sent; the preview card under the message is always the post.
 
 ## linkedin
 English text for LinkedIn. Plain text; the post is attached as an article card.
