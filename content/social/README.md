@@ -13,7 +13,8 @@ inline as [words](https://...). It must link the post itself (https://kirillorlo
 or it is not sent; the preview card under the message is always the post.
 
 ## linkedin
-English text for LinkedIn. Plain text; the post is attached as an article card.
+English text for LinkedIn, posted exactly as written. LinkedIn has no clickable words:
+write plain URLs. The post itself is attached as the card under the text.
 ```
 
 Each text is read in the channel, away from the post: refer to the site as "my site" or

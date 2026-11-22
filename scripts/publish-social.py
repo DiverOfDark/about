@@ -140,7 +140,12 @@ def post_telegram(text: str, url: str) -> str:
 # --- LinkedIn -------------------------------------------------------------
 
 def linkedin_escape(text: str) -> str:
-    """Posts API "little text": these characters must be escaped or the text is cut."""
+    """Posts API "little text": these characters must be escaped or the text is cut.
+
+    LinkedIn shows URLs as they are, so a [words](url) link would go out literally.
+    """
+    if MD_LINK.search(text):
+        raise ValueError("the linkedin text has a [words](url) link; LinkedIn shows those literally, write the plain URL")
     return re.sub(r"([\\|{}@\[\]()<>#*_~])", r"\\\1", text)
 
 
