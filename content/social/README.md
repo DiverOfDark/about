@@ -15,6 +15,9 @@ and shows as a preview card.
 English text for LinkedIn. Plain text; the post is attached as an article card.
 ```
 
+Each text is read in the channel, away from the post: refer to the site as "my site" or
+"my personal website", never "this blog" or "this post".
+
 Leave a section out to skip that channel. After posting, the workflow commits
 `<slug>.posted.json` with the links; delete an entry there to post again.
 
