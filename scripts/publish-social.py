@@ -15,7 +15,7 @@ the same PR as the post. After each successful post the channel is recorded in
 Environment (a channel without its credentials is skipped with a warning):
   TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
   LINKEDIN_TOKEN, LINKEDIN_PERSON_URN, LINKEDIN_TOKEN_EXPIRES (YYYY-MM-DD, for the warning)
-  LINKEDIN_VERSION   LinkedIn API version, YYYYMM (default below)
+  LINKEDIN_VERSION   LinkedIn API version, YYYYMM (default: the month two months back)
   DEPLOY_TIMEOUT     seconds to wait for post URLs, shared by all posts in a run (default 2400)
 
 Usage: publish-social.py [--dry-run] [--no-wait]
@@ -37,7 +37,21 @@ ROOT = Path(__file__).resolve().parents[1]
 BLOG = ROOT / "content" / "blog"
 SOCIAL = ROOT / "content" / "social"
 SITE = "https://kirillorlov.pro"
-LINKEDIN_VERSION = os.environ.get("LINKEDIN_VERSION") or "202510"
+
+
+def default_linkedin_version(today: dt.date | None = None) -> str:
+    """The month two months back, as YYYYMM.
+
+    LinkedIn ships a version every month and keeps each one for about a year, so this
+    is always released and stays active. A fixed value stops working once it is sunset
+    (202510 did on 2026-11-22: 426 NONEXISTENT_VERSION).
+    """
+    today = today or dt.date.today()
+    months = today.year * 12 + today.month - 1 - 2
+    return f"{months // 12}{months % 12 + 1:02d}"
+
+
+LINKEDIN_VERSION = os.environ.get("LINKEDIN_VERSION") or default_linkedin_version()
 CHANNELS = ("telegram", "linkedin")
 
 
